@@ -9,3 +9,6 @@ cats_data2 <- read_csv("data/feline-data_v2.csv", col_types = cols(
   likes_string = col_logical()
 ) )
 
+catcoats <- gl(3,4,21)
+levels(catcoats) <- c("tabby", "black", "white")
+catcoats
