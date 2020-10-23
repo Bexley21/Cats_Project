@@ -48,5 +48,19 @@ gapminder %>%
 library(ggplot2)
 library(ggiraph)
 country <- gapminder$country
-interactive_graph <- ggplot(data = gapminder, aes(x= year, y = gdpPercap, group = country)) + geom_line(aes(colour = continent)) + geom_point_interactive(aes(x=year, y = gdpPercap, tooltip = country)) 
+interactive_graph <- ggplot(data = gapminder, aes(x= year, y = gdpPercap, group = country)) + geom_line(aes(colour = continent)) + geom_point_interactive(aes(x=year, y = gdpPercap, tooltip = country)) + facet_wrap("continent") 
 girafe(ggobj = interactive_graph)
+#
+#pre-process data
+gapminder %>% 
+  filter(continent== "Europe") %>% ggplot(aes(x= year, y = lifeExp, group = country)) + geom_line(aes(colour = country))
+#
+#create a graph of average life expectancy
+gapminder %>% 
+ group_by(continent, year) %>% 
+  summarise(meanlifeExp =mean(lifeExp)) %>% 
+  ggplot(aes(x =year, y = meanlifeExp, colour = continent)) + geom_line()
+#
+# challenge 5 - use a log scale to present gdp
+gapminder %>% 
+  ggplot(aes(x= year, y = gdpPercap, group = country)) + geom_line() + scale_y_log10() + facet_wrap("continent") + labs(y = "log(gdp per capita)")
