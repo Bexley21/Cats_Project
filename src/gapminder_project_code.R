@@ -64,3 +64,21 @@ gapminder %>%
 # challenge 5 - use a log scale to present gdp
 gapminder %>% 
   ggplot(aes(x= year, y = gdpPercap, group = country)) + geom_line() + scale_y_log10() + facet_wrap("continent") + labs(y = "log(gdp per capita)")
+#
+# histogram
+gapminder %>% filter(year == 2002, continent == "Americas") %>% 
+  ggplot(aes(x = lifeExp)) + geom_histogram(bins = 20)
+#interactive histogram
+lifeExp_2002 <- filter(gapminder, year == 2002)
+lifeExp_hist <- ggplot(lifeExp_2002, aes(x = lifeExp)) + geom_histogram_interactive(bins = 30, aes(tooltip = country)) + facet_wrap("continent")
+girafe(ggobj = lifeExp_hist)
+#
+#density
+gapminder %>% 
+  filter(year == 2007, continent == "Europe") %>% 
+  ggplot(aes(x = gdpPercap)) + geom_density(fill = "yellow", color = "green")
+
+gapminder %>% 
+  filter(continent %in% c("Africa", "Europe")) %>%
+  ggplot(aes(x = gdpPercap)) + geom_density(aes(fill = continent, alpha = 0.5)) + facet_wrap("year") + labs( x = "GDP per capita", y = "Density", title = " GDP per capita in Europe and Africa", fill = "continent")
+ggsave("Plots/gdpPercapAandE.pdf")
